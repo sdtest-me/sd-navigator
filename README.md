@@ -36,7 +36,6 @@ Where:
 | Component | Source |
 |-----------|--------|
 | vMeme framework (Purple → Turquoise) | Clare Graves / Beck & Cowan — Spiral Dynamics |
-| Algebra of Conscience scoring (J) | Vladimir Lefebvre |
 | Empirical correlations (C matrix) | SDTEST® dataset — 91,000+ assessments, 172 countries |
 | Dynamic Programming Model | Bellman optimality principle |
 
