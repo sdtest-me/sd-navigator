@@ -4,6 +4,8 @@
 
 → **[Live demo](https://sdtest-me.github.io/sd-navigator/)**
 
+> **Watch:** [Create your own SD-Navigator to predict reaction from "Why" to "What's Next"](https://www.youtube.com/watch?v=ymLzdm3HdkI&t=0s)
+
 ---
 
 ## What it does
