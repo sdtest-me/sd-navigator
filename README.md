@@ -27,7 +27,7 @@ Where:
 - `S(t)` — current state vector (7 vMemes + 3 psychological sensors)
 - `u(k)` — management action (u1–u9)
 - `C` — empirical correlation matrix from SDTEST® dataset
-- `J` — stability score from Lefebvre's Algebra of Conscience
+- `J` — stability score
 
 ---
 
@@ -96,7 +96,7 @@ This version uses a **synthetic demonstration dataset**. The full empirically-ca
 
 ---
 
-## J score — Algebra of Conscience
+## J score
 
 ```
 J = −ΔFear·w_fear + ΔWellbeing·w_well + ΔTrust·w_trust + actionImpact·w_action + cultureFit·w_cult
