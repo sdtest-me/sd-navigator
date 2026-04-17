@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDTEST® SD-Navigator — Algebra of Conscience</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f4f4f0;
+    --color-background-tertiary: #eceae3;
+    --color-background-info: #e6f1fb;
+    --color-background-success: #eaf3de;
+    --color-background-warning: #faeeda;
+    --color-background-danger: #fcebeb;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #5f5e5a;
+    --color-text-tertiary: #888780;
+    --color-text-info: #185fa5;
+    --color-text-success: #3b6d11;
+    --color-text-warning: #854f0b;
+    --color-text-danger: #a32d2d;
+    --color-border-tertiary: rgba(0,0,0,0.12);
+    --color-border-secondary: rgba(0,0,0,0.22);
+    --color-border-primary: rgba(0,0,0,0.32);
+    --color-border-info: #185fa5;
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --purple:#7B4FD4; --red:#E03030; --blue:#4A7FC1; --orange:#E07A20;
+    --green:#3A9E52; --yellow:#C9A800; --turquoise:#1AABAB;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1e1e1c;
+      --color-background-secondary: #2a2a27;
+      --color-background-tertiary: #333330;
+      --color-background-info: #042c53;
+      --color-background-success: #173404;
+      --color-background-warning: #412402;
+      --color-background-danger: #501313;
+      --color-text-primary: #e8e6de;
+      --color-text-secondary: #b4b2a9;
+      --color-text-tertiary: #888780;
+      --color-text-info: #85b7eb;
+      --color-text-success: #97c459;
+      --color-text-warning: #ef9f27;
+      --color-text-danger: #f09595;
+      --color-border-tertiary: rgba(255,255,255,0.12);
+      --color-border-secondary: rgba(255,255,255,0.22);
+      --color-border-primary: rgba(255,255,255,0.32);
+      --color-border-info: #85b7eb;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background: var(--color-background-tertiary);
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .shell { max-width: 900px; margin: 0 auto; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.25rem;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .vmeme-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .vmeme-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .vmeme-name { font-size: 13px; width: 80px; flex-shrink: 0; }
+  .vmeme-row input[type=range] { flex: 1; accent-color: var(--acc); }
+  .vmeme-val { font-size: 12px; width: 30px; text-align: right; color: var(--color-text-secondary); }
+
+  .psych-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .psych-name { font-size: 13px; width: 80px; }
+  .psych-row input[type=range] { flex: 1; }
+  .psych-val { font-size: 12px; width: 30px; text-align: right; color: var(--color-text-secondary); }
+
+  .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .action-btn {
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 8px 10px;
+    font-size: 12px;
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: background .15s, border-color .15s, transform .1s;
+    line-height: 1.35;
+  }
+  .action-btn:hover { background: var(--color-background-tertiary); }
+  .action-btn.selected {
+    border: 2px solid var(--color-border-info);
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+  }
+  .action-btn:active { transform: scale(0.98); }
+  .action-code { font-size: 10px; font-weight: 500; opacity: .7; display: block; }
+
+  .weight-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .weight-label { font-size: 12px; width: 130px; }
+  .weight-row input[type=range] { flex: 1; }
+  .weight-val { font-size: 12px; width: 28px; text-align: right; color: var(--color-text-secondary); }
+
+  .run-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-primary);
+    background: var(--color-background-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    transition: background .15s, transform .1s;
+    margin-top: 4px;
+  }
+  .run-btn:hover { background: var(--color-background-secondary); }
+  .run-btn:active { transform: scale(0.98); }
+
+  .state-bar-wrap { margin-bottom: 6px; }
+  .state-bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 2px; }
+  .state-bar-track { height: 10px; border-radius: 5px; background: var(--color-background-secondary); overflow: hidden; }
+  .state-bar-fill { height: 100%; border-radius: 5px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+
+  .j-score { text-align: center; padding: 12px 0; border-top: 0.5px solid var(--color-border-tertiary); margin-top: 12px; }
+  .j-number { font-size: 28px; font-weight: 500; transition: color .4s; }
+  .j-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  .alert-box {
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 10px;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .alert-warn { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .alert-ok { background: var(--color-background-success); color: var(--color-text-success); }
+
+  .tab-row { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tab {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .tab.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; }
+
+  .chain-link {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    border-left: 3px solid var(--color-border-secondary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .chain-link.danger { border-left-color: #E03030; background: var(--color-background-danger); }
+  .chain-arrow { font-size: 12px; color: var(--color-text-tertiary); margin-left: 16px; margin-bottom: 4px; }
+
+  .divider { height: 1px; background: var(--color-border-tertiary); margin: 10px 0; }
+  .result-section { margin-top: 12px; }
+  .controls-col { display: flex; flex-direction: column; gap: 12px; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    body { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <h1>SDTEST® SD-Navigator</h1>
+  <p class="subtitle">Algebra of Conscience — Dynamic Programming Model &nbsp;·&nbsp; S(t+1) = f[S(t), u(k), C]</p>
+
+  <div class="grid">
+
+    <!-- State Vector -->
+    <div class="card">
+      <p class="section-label">State vector S(t) — worldview profile</p>
+
+      <div class="vmeme-row" style="--acc:var(--purple)">
+        <div class="vmeme-dot" style="background:var(--purple)"></div>
+        <span class="vmeme-name">Purple</span>
+        <input type="range" min="0" max="100" value="30" id="s_purple" oninput="upd('purple',this.value)">
+        <span class="vmeme-val" id="v_purple">0.30</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--red)">
+        <div class="vmeme-dot" style="background:var(--red)"></div>
+        <span class="vmeme-name">Red</span>
+        <input type="range" min="0" max="100" value="20" id="s_red" oninput="upd('red',this.value)">
+        <span class="vmeme-val" id="v_red">0.20</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--blue)">
+        <div class="vmeme-dot" style="background:var(--blue)"></div>
+        <span class="vmeme-name">Blue</span>
+        <input type="range" min="0" max="100" value="50" id="s_blue" oninput="upd('blue',this.value)">
+        <span class="vmeme-val" id="v_blue">0.50</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--orange)">
+        <div class="vmeme-dot" style="background:var(--orange)"></div>
+        <span class="vmeme-name">Orange</span>
+        <input type="range" min="0" max="100" value="45" id="s_orange" oninput="upd('orange',this.value)">
+        <span class="vmeme-val" id="v_orange">0.45</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--green)">
+        <div class="vmeme-dot" style="background:var(--green)"></div>
+        <span class="vmeme-name">Green</span>
+        <input type="range" min="0" max="100" value="35" id="s_green" oninput="upd('green',this.value)">
+        <span class="vmeme-val" id="v_green">0.35</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--yellow)">
+        <div class="vmeme-dot" style="background:var(--yellow)"></div>
+        <span class="vmeme-name">Yellow</span>
+        <input type="range" min="0" max="100" value="15" id="s_yellow" oninput="upd('yellow',this.value)">
+        <span class="vmeme-val" id="v_yellow">0.15</span>
+      </div>
+      <div class="vmeme-row" style="--acc:var(--turquoise)">
+        <div class="vmeme-dot" style="background:var(--turquoise)"></div>
+        <span class="vmeme-name">Turquoise</span>
+        <input type="range" min="0" max="100" value="10" id="s_turquoise" oninput="upd('turquoise',this.value)">
+        <span class="vmeme-val" id="v_turquoise">0.10</span>
+      </div>
+
+      <div class="divider"></div>
+      <p class="section-label">Psychological sensors</p>
+
+      <div class="psych-row">
+        <span class="psych-name">Fear</span>
+        <input type="range" min="0" max="100" value="60" id="s_fear" oninput="updP('fear',this.value)">
+        <span class="psych-val" id="v_fear">0.60</span>
+      </div>
+      <div class="psych-row">
+        <span class="psych-name">Trust</span>
+        <input type="range" min="0" max="100" value="40" id="s_trust" oninput="updP('trust',this.value)">
+        <span class="psych-val" id="v_trust">0.40</span>
+      </div>
+      <div class="psych-row">
+        <span class="psych-name">Wellbeing</span>
+        <input type="range" min="0" max="100" value="50" id="s_well" oninput="updP('well',this.value)">
+        <span class="psych-val" id="v_well">0.50</span>
+      </div>
+    </div>
+
+    <!-- Controls column -->
+    <div class="controls-col">
+
+      <div class="card">
+        <p class="section-label">Control u(k) — management action</p>
+        <div class="actions-grid" id="actionGrid">
+          <button class="action-btn selected" onclick="selectAction(this,'u1')"><span class="action-code">u1</span>Unpaid vacation</button>
+          <button class="action-btn" onclick="selectAction(this,'u2')"><span class="action-code">u2</span>Do nothing</button>
+          <button class="action-btn" onclick="selectAction(this,'u4')"><span class="action-code">u4</span>Reduce salaries</button>
+          <button class="action-btn" onclick="selectAction(this,'u6')"><span class="action-code">u6</span>Remote work</button>
+          <button class="action-btn" onclick="selectAction(this,'u7')"><span class="action-code">u7</span>Reduce staff</button>
+          <button class="action-btn" onclick="selectAction(this,'u9')"><span class="action-code">u9</span>Innovation push</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="section-label">Objective weights w<sub>i</sub> &nbsp;— &nbsp;J = Σ(weight · impact)</p>
+        <div class="weight-row">
+          <span class="weight-label">Fears (w=0.9)</span>
+          <input type="range" min="0" max="100" value="90" id="w_fear" oninput="updW('fear',this.value)">
+          <span class="weight-val" id="wv_fear">0.9</span>
+        </div>
+        <div class="weight-row">
+          <span class="weight-label">Wellbeing (w=0.8)</span>
+          <input type="range" min="0" max="100" value="80" id="w_well" oninput="updW('well',this.value)">
+          <span class="weight-val" id="wv_well">0.8</span>
+        </div>
+        <div class="weight-row">
+          <span class="weight-label">Direct action (w=1.0)</span>
+          <input type="range" min="0" max="100" value="100" id="w_action" oninput="updW('action',this.value)">
+          <span class="weight-val" id="wv_action">1.0</span>
+        </div>
+        <div class="weight-row">
+          <span class="weight-label">Self-trust (w=0.4)</span>
+          <input type="range" min="0" max="100" value="40" id="w_trust" oninput="updW('trust',this.value)">
+          <span class="weight-val" id="wv_trust">0.4</span>
+        </div>
+        <div class="weight-row">
+          <span class="weight-label">Culture fit (w=0.3)</span>
+          <input type="range" min="0" max="100" value="30" id="w_cult" oninput="updW('cult',this.value)">
+          <span class="weight-val" id="wv_cult">0.3</span>
+        </div>
+      </div>
+
+      <button class="run-btn" onclick="runModel()">Run transition function S(t+1) = f[S(t), u(k), C]</button>
+
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="result-section">
+    <div class="card">
+      <div class="tab-row">
+        <button class="tab active" onclick="showTab('trajectory',this)">Predicted state S(t+1)</button>
+        <button class="tab" onclick="showTab('butterfly',this)">Butterfly effects</button>
+        <button class="tab" onclick="showTab('protocol',this)">Adaptive protocol</button>
+      </div>
+
+      <div id="tab_trajectory">
+        <div class="grid">
+          <div>
+            <p class="section-label">vMeme trajectory (delta from current)</p>
+            <div id="trajBars"></div>
+          </div>
+          <div>
+            <p class="section-label">Psychological sensors — predicted</p>
+            <div id="psychBars"></div>
+            <div class="j-score">
+              <div class="j-number" id="jScore">—</div>
+              <div class="j-label">J = Σ(weight · impact) — stability score</div>
+            </div>
+          </div>
+        </div>
+        <div id="alertBox"></div>
+      </div>
+
+      <div id="tab_butterfly" style="display:none">
+        <p class="section-label">Network cascade — weak signal amplification</p>
+        <div id="butterflyChain"></div>
+      </div>
+
+      <div id="tab_protocol" style="display:none">
+        <p class="section-label">Adaptive protocol — condition-action map</p>
+        <div id="protocolGrid"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const vmemeColors = {
+  purple:'#7B4FD4', red:'#E03030', blue:'#4A7FC1', orange:'#E07A20',
+  green:'#3A9E52', yellow:'#C9A800', turquoise:'#1AABAB'
+};
+
+const state = {
+  purple:0.30, red:0.20, blue:0.50, orange:0.45, green:0.35, yellow:0.15, turquoise:0.10,
+  fear:0.60, trust:0.40, well:0.50
+};
+const weights = { fear:0.9, well:0.8, action:1.0, trust:0.4, cult:0.3 };
+let selectedAction = 'u1';
+
+const C = {
+  u1: { purple:+0.154, red:-0.02,  blue:+0.03,  orange:-0.125, green:+0.108, yellow:-0.04,  turquoise:+0.01,
+        fear:+0.05, trust:-0.04, well:-0.06, actionImpact:+0.65 },
+  u2: { purple:+0.00, red:+0.00,  blue:+0.01,  orange:+0.00,  green:+0.01,  yellow:+0.00,  turquoise:+0.00,
+        fear:-0.02, trust:+0.03, well:+0.04, actionImpact:+0.20 },
+  u4: { purple:+0.01, red:+0.059, blue:-0.01,  orange:+0.02,  green:-0.03,  yellow:-0.074, turquoise:-0.01,
+        fear:+0.12, trust:-0.10, well:-0.15, actionImpact:-0.40 },
+  u6: { purple:-0.01, red:-0.02,  blue:+0.071, orange:+0.03,  green:-0.08,  yellow:+0.04,  turquoise:+0.02,
+        fear:-0.03, trust:+0.05, well:+0.08, actionImpact:+0.45 },
+  u7: { purple:+0.02, red:+0.03,  blue:-0.02,  orange:-0.01,  green:-0.04,  yellow:-0.05,  turquoise:-0.02,
+        fear:+0.25, trust:-0.18, well:-0.22, actionImpact:-0.70 },
+  u9: { purple:-0.02, red:-0.01,  blue:+0.02,  orange:+0.08,  green:+0.04,  yellow:+0.09,  turquoise:+0.05,
+        fear:-0.06, trust:+0.10, well:+0.12, actionImpact:+0.80 }
+};
+
+const butterflyMap = {
+  u7:[
+    {text:'Action u7: Reduce staff initiated', cls:''},
+    {text:'Poll 3 — Fear of job loss spikes (+0.25)', cls:''},
+    {text:'Network effect: fear spreads via social channels', cls:''},
+    {text:'Poll 16 — Trust in leadership collapses (−0.18)', cls:'danger'},
+    {text:'Poll 11 — Ageism risk increases (demographic scapegoating)', cls:''},
+    {text:'→ Leadership legitimacy crash. Orange & Green disengage.', cls:'danger'}
+  ],
+  u4:[
+    {text:'Action u4: Salary reduction announced', cls:''},
+    {text:'Yellow vMeme rejects rigidity (r=−0.074)', cls:''},
+    {text:'Poll 3 — Fear of further cuts activates (r=+0.12)', cls:''},
+    {text:'Poll 16 — Trust damaged as fairness norm violated', cls:'danger'},
+    {text:'→ High-performers (Yellow/Orange) begin exit planning', cls:'danger'}
+  ],
+  u1:[
+    {text:'Action u1: Unpaid vacation policy applied', cls:''},
+    {text:'Purple accepts as ritual sacrifice (r=+0.154)', cls:''},
+    {text:'Green accepts if it saves jobs (r=+0.108)', cls:''},
+    {text:'Orange rejects as inefficient (r=−0.125)', cls:''},
+    {text:'→ Moderate stability. Orange resentment may surface later.', cls:''}
+  ],
+  u6:[
+    {text:'Action u6: Remote work policy activated', cls:''},
+    {text:'Blue accepts: stability traded for convenience (r=+0.071)', cls:''},
+    {text:'Green rejects: fears loss of team cohesion (r=−0.08)', cls:''},
+    {text:'→ Hybrid model recommended to balance both profiles', cls:''}
+  ],
+  u2:[
+    {text:'Action u2: No change — status quo maintained', cls:''},
+    {text:'Fear level stabilises (−0.02)', cls:''},
+    {text:'Trust marginally recovers (+0.03)', cls:''},
+    {text:'→ Pause signal accepted. System gets a break.', cls:''}
+  ],
+  u9:[
+    {text:'Action u9: Innovation push launched', cls:''},
+    {text:'Orange and Yellow respond strongly (r=+0.08, +0.09)', cls:''},
+    {text:'Poll 5 — Leadership legitimacy improves in Orange-dominant orgs', cls:''},
+    {text:'→ High J score. Best fit when Trust is already adequate.', cls:''}
+  ]
+};
+
+const protocolMap = [
+  {cond:'High Fear / High Purple-Red', action:'u1 — Unpaid vacation', why:'Ritualizes the crisis; Purple accepts as sacrifice'},
+  {cond:'Low Trust / High Orange', action:'u9 — Innovation push', why:'Focus on opportunity; Orange responds to results'},
+  {cond:'High Ageism risk', action:'Avoid u4 (salary cuts)', why:'Discrimination lawsuit risk; Blue fairness norm violated'},
+  {cond:'Low Wellbeing', action:'u2 — Do nothing', why:'Give the system a break; prevent compounding stress'},
+  {cond:'High Fear + Green dominance', action:'u6 — Remote work (hybrid)', why:'Satisfies Blue safety, creates virtual rituals for Green'},
+  {cond:'Yellow/Turquoise dominant', action:'u9 — Innovation push', why:'Second-tier consciousness embraces systemic opportunity'}
+];
+
+function upd(k,v){ state[k]=v/100; document.getElementById('v_'+k).textContent=(v/100).toFixed(2); }
+function updP(k,v){ state[k]=v/100; document.getElementById('v_'+k).textContent=(v/100).toFixed(2); }
+function updW(k,v){ weights[k]=v/100; document.getElementById('wv_'+k).textContent=(v/100).toFixed(1); }
+
+function selectAction(btn, action) {
+  document.querySelectorAll('.action-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedAction = action;
+}
+
+function showTab(name, btn) {
+  ['trajectory','butterfly','protocol'].forEach(t=>{
+    document.getElementById('tab_'+t).style.display = t===name?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function runModel() {
+  const corr = C[selectedAction];
+  const fearMod = 1 + (state.fear - 0.5) * 0.3;
+  const trustMod = 1 + (state.trust - 0.5) * 0.2;
+
+  const nextState = {};
+  const vmemes = ['purple','red','blue','orange','green','yellow','turquoise'];
+  vmemes.forEach(v => {
+    nextState[v] = Math.max(0, Math.min(1, state[v] + corr[v] * fearMod));
+  });
+  const nextFear  = Math.max(0, Math.min(1, state.fear  + corr.fear  * fearMod));
+  const nextTrust = Math.max(0, Math.min(1, state.trust + corr.trust * trustMod));
+  const nextWell  = Math.max(0, Math.min(1, state.well  + corr.well));
+
+  const fearImpact   = -(nextFear - state.fear) * weights.fear;
+  const wellImpact   =  (nextWell - state.well) * weights.well;
+  const trustImpact  =  (nextTrust - state.trust) * weights.trust;
+  const actionImpact =  corr.actionImpact * weights.action;
+  const dominantVal  = Math.max(...vmemes.map(v=>state[v]));
+  const cultImpact   = dominantVal * weights.cult * (corr.actionImpact > 0 ? 1 : -0.5);
+  const J = fearImpact + wellImpact + trustImpact + actionImpact + cultImpact;
+  const Jnorm = Math.min(1, Math.max(-1, J));
+
+  const trajContainer = document.getElementById('trajBars');
+  trajContainer.innerHTML = '';
+  vmemes.forEach(v => {
+    const delta = nextState[v] - state[v];
+    const dStr = (delta>=0?'+':'')+delta.toFixed(3);
+    const dColor = delta>0.005?'#3A9E52':delta<-0.005?'#E03030':'var(--color-text-secondary)';
+    trajContainer.innerHTML += `
+      <div class="state-bar-wrap">
+        <div class="state-bar-label">
+          <span style="font-size:12px;display:flex;align-items:center;gap:5px">
+            <span style="width:8px;height:8px;border-radius:50%;background:${vmemeColors[v]};display:inline-block"></span>
+            ${v.charAt(0).toUpperCase()+v.slice(1)}
+          </span>
+          <span style="font-size:12px;display:flex;gap:8px">
+            <span style="color:${dColor};font-weight:500">${dStr}</span>
+            <span style="color:var(--color-text-secondary)">${nextState[v].toFixed(2)}</span>
+          </span>
+        </div>
+        <div class="state-bar-track">
+          <div class="state-bar-fill" style="width:${Math.round(nextState[v]*100)}%;background:${vmemeColors[v]}"></div>
+        </div>
+      </div>`;
+  });
+
+  const psychContainer = document.getElementById('psychBars');
+  psychContainer.innerHTML = '';
+  [['Fear',nextFear,state.fear,'#E03030'],
+   ['Trust',nextTrust,state.trust,'#4A7FC1'],
+   ['Wellbeing',nextWell,state.well,'#3A9E52']].forEach(([name,next,curr,col])=>{
+    const delta = next - curr;
+    const dStr = (delta>=0?'+':'')+delta.toFixed(3);
+    const dColor = name==='Fear'
+      ? (delta<-0.005?'#3A9E52':delta>0.005?'#E03030':'var(--color-text-secondary)')
+      : (delta>0.005?'#3A9E52':delta<-0.005?'#E03030':'var(--color-text-secondary)');
+    psychContainer.innerHTML += `
+      <div class="state-bar-wrap">
+        <div class="state-bar-label">
+          <span style="font-size:12px">${name}</span>
+          <span style="font-size:12px;display:flex;gap:8px">
+            <span style="color:${dColor};font-weight:500">${dStr}</span>
+            <span style="color:var(--color-text-secondary)">${next.toFixed(2)}</span>
+          </span>
+        </div>
+        <div class="state-bar-track">
+          <div class="state-bar-fill" style="width:${Math.round(next*100)}%;background:${col}"></div>
+        </div>
+      </div>`;
+  });
+
+  const jEl = document.getElementById('jScore');
+  jEl.textContent = Jnorm.toFixed(3);
+  jEl.style.color = Jnorm>0.15?'#3A9E52':Jnorm<-0.1?'#E03030':'var(--color-text-primary)';
+
+  const alertBox = document.getElementById('alertBox');
+  if(Jnorm < -0.1) {
+    alertBox.innerHTML = `<div class="alert-box alert-warn">Warning: J &lt; 0 — this action is predicted to destabilize the system. Consider u2 (pause) or u9 (innovation) if trust permits.</div>`;
+  } else if(Jnorm > 0.2) {
+    alertBox.innerHTML = `<div class="alert-box alert-ok">Optimal path: J &gt; 0.20 — this action strengthens stability and engagement given the current profile.</div>`;
+  } else {
+    alertBox.innerHTML = '';
+  }
+
+  const chain = butterflyMap[selectedAction] || [];
+  document.getElementById('butterflyChain').innerHTML = chain.map((link,i)=>
+    `${i>0?'<div class="chain-arrow">↓</div>':''}<div class="chain-link ${link.cls}">${link.text}</div>`
+  ).join('');
+
+  const pg = document.getElementById('protocolGrid');
+  pg.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">` +
+    protocolMap.map(p=>`
+      <div class="card" style="padding:10px 12px">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px">Condition</div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:6px">${p.cond}</div>
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:2px">Action</div>
+        <div style="font-size:12px;color:var(--color-text-info);margin-bottom:4px">${p.action}</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);font-style:italic">${p.why}</div>
+      </div>`).join('') + '</div>';
+}
+
+runModel();
+</script>
+</body>
+</html>
