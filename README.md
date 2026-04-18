@@ -1,16 +1,16 @@
-# SDTEST® SD-Navigator
+# SDTEST® SD-Navigator™
 
 **Behavioral simulation engine based on Spiral Dynamics and Algebra of Conscience**
 
 → **[Live demo](https://sdtest-me.github.io/sd-navigator/)**
 
-> **Watch:** [Create your own SD-Navigator to predict reaction from "Why" to "What's Next"](https://www.youtube.com/watch?v=ymLzdm3HdkI&t=0s)
+> **Watch:** [Create your own SD-Navigator™ to predict reaction from "Why" to "What's Next"](https://www.youtube.com/watch?v=ymLzdm3HdkI&t=0s)
 
 ---
 
 ## What it does
 
-SD-Navigator models how management decisions affect an organization's behavioral system over time.
+SD-Navigator™ models how management decisions affect an organization's behavioral system over time.
 
 It answers questions that standard analytics cannot:
 - *What will happen if we reduce staff with our current vMeme profile?*
